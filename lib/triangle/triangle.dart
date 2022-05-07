@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:petli/line/line_painter.dart';
-import 'package:petli/circle/circle_painter.dart';
+
 import 'package:petli/triangle/triangle_painter.dart';
 
 class Triangle extends StatefulWidget {
@@ -15,8 +15,6 @@ class _TriangleState extends State<Triangle> {
   static Offset newPosition = const Offset(10, 10);
   static bool _isDragged = false;
   static const arr = <Offset>[];
-
-  var circle = CirclePainter();
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +31,7 @@ class _TriangleState extends State<Triangle> {
             });
           },
           onPanUpdate: (details) => {print(details.globalPosition)},
-          child: Container(
-            height: 300,
-            width: 300,
-            color: Colors.yellow,
-            child: CustomPaint(painter: TrianglePainter()),
-          )),
+          child: CustomPaint(painter: TrianglePainter())),
     );
   }
 

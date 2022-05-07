@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:petli/circle/circle_painter.dart';
 
 class Circle extends StatefulWidget {
   const Circle({Key? key}) : super(key: key);
@@ -9,11 +8,10 @@ class Circle extends StatefulWidget {
 }
 
 class _CircleState extends State<Circle> {
-  var xPos = 0.0;
-  var yPos = 0.0;
-  var pos = const Offset(0, 0);
-  final width = 100.0;
-  final height = 100.0;
+  var xPos = 40.0;
+  var yPos = 40.0;
+  var pos = const Offset(40, 40);
+
   bool _isDragged =
       false; // _variable can only be accesed inside the class (private)
 
