@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petli/circle/circle.dart';
 import 'package:petli/triangle/triangle.dart';
 
 void main() {
@@ -15,13 +16,11 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: const Color(0xff5c3c61),
             title: const Text(
-              'Petli Assignment',
+              'Petli Assignment 🐶',
               style: TextStyle(color: Colors.white),
             ),
           ),
-          body: const Center(
-            child: Triangle(),
-          )),
+          body: const Circle()),
     );
   }
 }
