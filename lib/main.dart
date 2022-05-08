@@ -5,7 +5,6 @@ void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -46,108 +45,117 @@ class _MyCanvasState extends State<MyCanvas> {
 
   @override
   Widget build(BuildContext context) {
+    // First positions of circle
     pos.add(Position(192, 476));
     pos.add(Position(312, 253));
     pos.add(Position(52, 253));
-    pos.add(Position(50, 50));
+
+    Icon circle = const Icon(
+      Icons.circle_outlined,
+      size: 30,
+      color: Colors.purpleAccent,
+    );
 
     return Scaffold(
-      body: Center(
-        child: CustomMultiChildLayout(
-          delegate: DragArea(pos),
-          children: <Widget>[
-            LayoutId(
-              id: 't0',
-              child: Draggable(
-                feedback: const Icon(Icons.circle_outlined),
-                child: const Icon(
-                  Icons.circle_outlined,
-                  color: Color(0xffff99af),
+      body: Stack(
+        clipBehavior:
+            Clip.antiAlias, // An attempt to clip overflowing widgets :(
+        children: <Widget>[
+          Positioned(child: CustomPaint(painter: LinePainter(pos))),
+          Positioned(
+            child: CustomMultiChildLayout(
+              delegate: DragArea(pos),
+              children: <Widget>[
+                LayoutId(
+                  id: 'c0',
+                  child: Draggable(
+                    feedback: circle,
+                    child: circle,
+                    childWhenDragging: Container(),
+                    onDragUpdate: (DragUpdateDetails d) {
+                      setState(() {
+                        pos[0].setPosition(
+                            d.globalPosition.dx, d.globalPosition.dy);
+                      });
+                    },
+                  ),
                 ),
-                childWhenDragging: Container(),
-                onDragEnd: (DraggableDetails d) {
-                  setState(() {
-                    pos[0].setPosition(d.offset.dx, d.offset.dy);
-                  });
-                },
-              ),
-            ),
-            LayoutId(
-              id: 't1',
-              child: Draggable(
-                feedback: const Icon(Icons.circle_outlined),
-                child: const Icon(
-                  Icons.circle_outlined,
-                  color: Color(0xffff99af),
+                LayoutId(
+                  id: 'c1',
+                  child: Draggable(
+                    feedback: circle,
+                    child: circle,
+                    childWhenDragging: Container(),
+                    onDragUpdate: (DragUpdateDetails d) {
+                      setState(() {
+                        pos[1].setPosition(
+                            d.globalPosition.dx, d.globalPosition.dy);
+                      });
+                    },
+                  ),
                 ),
-                childWhenDragging: Container(),
-                onDragEnd: (DraggableDetails d) {
-                  setState(() {
-                    pos[1].setPosition(d.offset.dx, d.offset.dy);
-                  });
-                },
-              ),
-            ),
-            LayoutId(
-              id: 't2',
-              child: Draggable(
-                feedback: const Icon(Icons.circle_outlined),
-                child: const Icon(
-                  Icons.circle_outlined,
-                  color: Color(0xffff99af),
+                LayoutId(
+                  id: 'c2',
+                  child: Draggable(
+                    feedback: circle,
+                    child: circle,
+                    childWhenDragging: Container(),
+                    onDragUpdate: (DragUpdateDetails d) {
+                      setState(() {
+                        pos[2].setPosition(
+                            d.globalPosition.dx, d.globalPosition.dy);
+                      });
+                    },
+                  ),
                 ),
-                childWhenDragging: Container(),
-                onDragEnd: (DraggableDetails d) {
-                  setState(() {
-                    pos[2].setPosition(d.offset.dx, d.offset.dy);
-                  });
-                },
-              ),
+              ],
             ),
-            LayoutId(id: 't3', child: CustomPaint(painter: LinePainter(pos))),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class LinePainter extends CustomPainter {
-  var _positions = [];
+  var positions = <Position>[];
 
-  LinePainter(this._positions);
+  LinePainter(this.positions);
 
   @override
   void paint(Canvas canvas, Size size) {
     final painter = Paint()
-      ..color = const Color(0xffff99af)
+      ..color = Colors.purpleAccent
       ..strokeWidth = 3
       ..style = PaintingStyle.stroke;
 
+    // Draw lines between cirle positions
     var path = Path();
-    path.moveTo(_positions[0].x, _positions[0].y);
-    path.lineTo(_positions[1].x, _positions[1].y);
-    path.lineTo(_positions[2].x, _positions[2].y);
+    // Add + icon size / 2 to center triangle corners in circle
+    path.moveTo(positions[0].x + 15, positions[0].y + 15);
+    path.lineTo(positions[1].x + 15, positions[1].y + 15);
+    path.lineTo(positions[2].x + 15, positions[2].y + 15);
     path.close();
     canvas.drawPath(path, painter);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+    return true; // Enable to redraw line onDragUpdate
   }
 }
 
+// Clickable area for dragging
 class DragArea extends MultiChildLayoutDelegate {
-  var _p = <Position>[];
+  var p = <Position>[];
 
-  DragArea(this._p);
+  DragArea(this.p);
 
   @override
   void performLayout(Size size) {
-    for (int i = 0; i < 4; i++) {
-      layoutChild('t' + i.toString(), BoxConstraints.loose(size));
-      positionChild('t' + i.toString(), Offset(_p[i].x, _p[i].y));
+    for (int i = 0; i < 3; i++) {
+      layoutChild('c' + i.toString(), BoxConstraints.loose(size));
+      positionChild('c' + i.toString(), Offset(p[i].x, p[i].y));
     }
   }
 
