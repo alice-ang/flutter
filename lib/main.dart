@@ -53,11 +53,26 @@ class _MyCanvasState extends State<MyCanvas> {
     pos.add(Position(312, 253));
     pos.add(Position(52, 253));
 
-    Icon circle = const Icon(
-      Icons.circle_outlined,
-      size: 30,
-      color: Colors.purpleAccent,
-    );
+    Material circle = Material(
+        child: Ink(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.purpleAccent, width: 3),
+        color: Colors.purpleAccent,
+        shape: BoxShape.circle,
+      ),
+      child: InkWell(
+        //This keeps the splash effect within the circle
+        borderRadius: BorderRadius.circular(20),
+
+        child: const Padding(
+          padding: EdgeInsets.all(0),
+          child: Icon(
+            Icons.circle,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    ));
 
     return Scaffold(
       body: Stack(
