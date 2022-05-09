@@ -42,6 +42,9 @@ class Position {
 
 class _MyCanvasState extends State<MyCanvas> {
   var pos = <Position>[];
+  double xPos = 0.0;
+  double yPos = 0.0;
+  final int shapeSize = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,7 @@ class _MyCanvasState extends State<MyCanvas> {
         clipBehavior:
             Clip.antiAlias, // An attempt to clip overflowing widgets :(
         children: <Widget>[
-          Positioned(child: CustomPaint(painter: LinePainter(pos))),
+          Positioned(child: CustomPaint(painter: LinePainter(pos, shapeSize))),
           Positioned(
             child: CustomMultiChildLayout(
               delegate: DragArea(pos),
@@ -74,8 +77,8 @@ class _MyCanvasState extends State<MyCanvas> {
                     childWhenDragging: Container(),
                     onDragUpdate: (DragUpdateDetails d) {
                       setState(() {
-                        pos[0].setPosition(
-                            d.globalPosition.dx, d.globalPosition.dy);
+                        pos[0].setPosition(d.globalPosition.dx - shapeSize / 2,
+                            d.globalPosition.dy - shapeSize / 2);
                       });
                     },
                   ),
@@ -88,8 +91,8 @@ class _MyCanvasState extends State<MyCanvas> {
                     childWhenDragging: Container(),
                     onDragUpdate: (DragUpdateDetails d) {
                       setState(() {
-                        pos[1].setPosition(
-                            d.globalPosition.dx, d.globalPosition.dy);
+                        pos[1].setPosition(d.globalPosition.dx - shapeSize / 2,
+                            d.globalPosition.dy - shapeSize / 2);
                       });
                     },
                   ),
@@ -102,8 +105,8 @@ class _MyCanvasState extends State<MyCanvas> {
                     childWhenDragging: Container(),
                     onDragUpdate: (DragUpdateDetails d) {
                       setState(() {
-                        pos[2].setPosition(
-                            d.globalPosition.dx, d.globalPosition.dy);
+                        pos[2].setPosition(d.globalPosition.dx - shapeSize / 2,
+                            d.globalPosition.dy - shapeSize / 2);
                       });
                     },
                   ),
@@ -118,9 +121,10 @@ class _MyCanvasState extends State<MyCanvas> {
 }
 
 class LinePainter extends CustomPainter {
-  var positions = <Position>[];
+  List<Position> positions = [];
+  final int circleSize;
 
-  LinePainter(this.positions);
+  LinePainter(this.positions, this.circleSize);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -132,9 +136,12 @@ class LinePainter extends CustomPainter {
     // Draw lines between cirle positions
     var path = Path();
     // Add + icon size / 2 to center triangle corners in circle
-    path.moveTo(positions[0].x + 15, positions[0].y + 15);
-    path.lineTo(positions[1].x + 15, positions[1].y + 15);
-    path.lineTo(positions[2].x + 15, positions[2].y + 15);
+    path.moveTo(
+        positions[0].x + circleSize / 2, positions[0].y + circleSize / 2);
+    path.lineTo(
+        positions[1].x + circleSize / 2, positions[1].y + circleSize / 2);
+    path.lineTo(
+        positions[2].x + circleSize / 2, positions[2].y + circleSize / 2);
     path.close();
     canvas.drawPath(path, painter);
   }
@@ -147,7 +154,7 @@ class LinePainter extends CustomPainter {
 
 // Clickable area for dragging
 class DragArea extends MultiChildLayoutDelegate {
-  var p = <Position>[];
+  List<Position> p = [];
 
   DragArea(this.p);
 
