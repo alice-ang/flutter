@@ -57,7 +57,7 @@ class _MyCanvasState extends State<MyCanvas> {
     Material circle = Material(
         child: Ink(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.purpleAccent, width: 3),
+        border: Border.all(color: Colors.purpleAccent, width: 1),
         color: Colors.purpleAccent,
         shape: BoxShape.circle,
       ),
