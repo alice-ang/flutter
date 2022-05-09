@@ -53,6 +53,7 @@ class _MyCanvasState extends State<MyCanvas> {
     pos.add(Position(312, 253));
     pos.add(Position(52, 253));
 
+// Reusable circle shape
     Material circle = Material(
         child: Ink(
       decoration: BoxDecoration(
@@ -61,9 +62,7 @@ class _MyCanvasState extends State<MyCanvas> {
         shape: BoxShape.circle,
       ),
       child: InkWell(
-        //This keeps the splash effect within the circle
         borderRadius: BorderRadius.circular(20),
-
         child: const Padding(
           padding: EdgeInsets.all(0),
           child: Icon(
